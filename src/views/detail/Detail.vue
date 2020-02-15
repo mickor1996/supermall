@@ -1,17 +1,17 @@
 <template>
   <div id="detail">
-    <detail-nav-bar ref="nav" class="detail-nav" @titleClick="titleClick"></detail-nav-bar>
+    <detail-nav-bar ref="nav" class="detail-nav" @titleClick="titleClick" />
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
-      <detail-swiper :top-images="topImages"></detail-swiper>
-      <detail-base-info :goods="goods"></detail-base-info>
-      <detail-shop-info :shop="shop"></detail-shop-info>
-      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
-      <detail-param-info ref="params" :param-info="paramInfo"></detail-param-info>
-      <detail-comment-info ref="comment" :comment-info="commentInfo"></detail-comment-info>
-      <goods-list ref="recommend" :goods="recommend"></goods-list>
+      <detail-swiper :top-images="topImages" />
+      <detail-base-info :goods="goods" />
+      <detail-shop-info :shop="shop" />
+      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
+      <detail-param-info ref="params" :param-info="paramInfo" />
+      <detail-comment-info ref="comment" :comment-info="commentInfo" />
+      <goods-list ref="recommend" :goods="recommend" />
     </scroll>
-    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
-    <detail-bottom-bar></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop" />
+    <detail-bottom-bar @addCart="addToCart" />
   </div>
 </template>
 <script>
@@ -95,7 +95,7 @@
         this.themeTopYs.push(this.$refs.params.$el.offsetTop-44)
         this.themeTopYs.push(this.$refs.comment.$el.offsetTop-44)
         this.themeTopYs.push(this.$refs.recommend.$el.offsetTop-44)
-        console.log(this.themeTopYs)
+        // console.log(this.themeTopYs)
       },100)
     },
     methods:{
@@ -115,7 +115,7 @@
         for(let i =1;i < length;i++){
           if(this.currentIndex !=i&&((i<length-1&&positionY>=this.themeTopYs[i]&&positionY<this.themeTopYs[i+1])||(i==length-1&&positionY>=this.themeTopYs[i]))){
             this.currentIndex = i
-            console.log(this.currentIndex)
+            // console.log(this.currentIndex)
             this.$refs.nav.currentIndex=this.currentIndex
           }
         }
@@ -125,6 +125,15 @@
       backClick(){
         this.$refs.scroll.scrollTo(0,0,500)
       },
+      addToCart(){
+        const product = {}
+        product.image = this.topImages[0]
+        product.title = this.goods.title
+        product.desc = this.goods.desc
+        product.price = this.goods.nowPrice
+        product.iid = this.iid
+        this.$store.dispatch('addCart',product)
+      }
     },
     mounted(){
 
