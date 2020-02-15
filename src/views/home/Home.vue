@@ -25,7 +25,7 @@
 <script>
   import NavBar from 'common/navbar/NavBar'
   import Scroll from 'common/scroll/Scroll'
-  import {debounse} from 'common/utils.js'
+  import {debounse} from '@/common/utils.js'
   import TabControl from 'content/tabControl/TabControl.vue'
   import GoodsList from 'content/goods/GoodsList.vue'
   import BackTop from 'content/backTop/BackTop.vue'
@@ -34,6 +34,7 @@
   import RecommendView from './childComps/RecommendView.vue'
   import FeatureView from './childComps/FeatureView.vue'
 
+  import {itemListenerMixin} from '@/common/mixin.js'
   import {getHomeMultidata,getHomeGoods} from 'network/home.js'
 
   export default {
@@ -48,6 +49,7 @@
       RecommendView,
       FeatureView
     },
+    mixins:[itemListenerMixin],
     data(){
       return {
         banners: [],
@@ -60,12 +62,14 @@
         currentType:'pop',
         isShowBackTop:false,
         tabOffsetTop:0,
-        isTabFixed:false
+        isTabFixed:false,
+
       }
     },
     computed:{
       showGoods(){
-        return this.goods[this.currentType]
+        console.log(this.goods[this.currentType])
+        return this.goods[this.currentType].list
       }
     },
     methods:{
@@ -91,6 +95,7 @@
       },
       contentScroll(position){
         // console.log(position)
+        // 显示回到顶部
         this.isShowBackTop=(-position.y)>1000
 
         this.isTabFixed = (-position.y)>this.tabOffsetTop
@@ -127,12 +132,12 @@
 
     },
     mounted(){  
-      const refresh = debounse(this.$refs.scroll.refresh)
-      this.$bus.$on("itemImageLoad",()=>{
-        refresh()
-      })
 
-    }
+    },
+    deactivated(){
+      this.$bus.$off("itemImageLoad",this.itemImgListener)
+    },
+
 
   }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <goods-list-item v-for="item in goods.list" :goods-item="item"></goods-list-item>
+    <goods-list-item v-for="(item,index) in goods" :goods-item="item" :key='index'></goods-list-item>
   </div>
 </template>
 <script>
@@ -12,7 +12,7 @@
     },
     props:{
       goods:{
-        type:Object,
+        type:Array,
         default(){
           return []
         }
@@ -20,7 +20,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .goods{
     display:flex;
     flex-wrap: wrap;
