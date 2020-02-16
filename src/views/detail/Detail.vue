@@ -92,9 +92,9 @@
       this.getThemeTopY = debounse(()=>{
         this.themeTopYs = []
         this.themeTopYs.push(0)
-        this.themeTopYs.push(this.$refs.params.$el.offsetTop-44)
-        this.themeTopYs.push(this.$refs.comment.$el.offsetTop-44)
-        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop-44)
+        this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+        this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
+        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
         // console.log(this.themeTopYs)
       },100)
     },
@@ -132,7 +132,10 @@
         product.desc = this.goods.desc
         product.price = this.goods.nowPrice
         product.iid = this.iid
-        this.$store.dispatch('addCart',product)
+        this.$store.dispatch('addCart',product).then(res=>{
+          console.log(this.$toast)
+          this.$toast.show(res,2000)
+        })
       }
     },
     mounted(){
@@ -149,7 +152,7 @@
   }
   #detail{
     position: relative;
-    z-index: 9;
+    z-index: 11;
     background-color: #fff;
     height: 100vh;
   }

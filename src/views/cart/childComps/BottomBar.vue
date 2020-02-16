@@ -1,9 +1,9 @@
 <template>
   <div class="bottom-menu">
-    <CheckButton class="select-all" @checkBtnClick="checkBtnClick" v-model="isSelectAll"></CheckButton>
+    <CheckButton class="select-all" @checkBtnClick="checkBtnClick" :value="isSelectAll"></CheckButton>
     <span>全选</span>
     <span class="total-price">合计: ¥{{totalPrice}}</span>
-    <span class="buy-product">去计算({{$store.getters.cartCount}})</span>
+    <span class="buy-product" @click="calcClick">去计算({{$store.getters.cartCount}})</span>
   </div>
 </template>
 
@@ -42,6 +42,11 @@
           this.$store.state.cartList.forEach(item => {
             item.checked = false;
           });
+        }
+      },
+      calcClick(){
+        if(!this.isSelectAll) {
+          this.$toast.show('请选择购买商品',2000)
         }
       }
     }

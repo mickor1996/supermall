@@ -63,6 +63,7 @@
         isShowBackTop:false,
         tabOffsetTop:0,
         isTabFixed:false,
+        topY:0
 
       }
     },
@@ -136,7 +137,12 @@
     },
     deactivated(){
       this.$bus.$off("itemImageLoad",this.itemImgListener)
+      this.topY = this.$refs.scroll.scroll.y
     },
+    activated(){
+      this.$refs.scroll.scrollTo(0,this.topY,0)
+      this.$refs.scroll.refresh()
+    }
 
 
   }
